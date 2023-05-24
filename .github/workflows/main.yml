@@ -1,1 +1,30 @@
 
+name: Create BigQuery Table
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create-table:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0.4.0
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          project_id: sim-gcp
+
+      - name: Create BigQuery table
+        run: |
+          gcloud auth activate-service-account --key-file=${{ secrets.GCP_SA_KEY }}
+          bq mk \
+            --table \
+            --project_id=sim-gcp \
+            --dataset=sim_data_set \
+            table_2
