@@ -22,7 +22,8 @@ jobs:
 
       - name: Create BigQuery table
         run: |
-          gcloud auth activate-service-account --key-file=${{ secrets.GCP_SA_KEY }}
+          export GOOGLE_APPLICATION_CREDENTIALS=${{ secrets.GCP_SA_KEY }}
+          gcloud auth activate-service-account
           bq mk \
             --table \
             --project_id=sim-gcp \
